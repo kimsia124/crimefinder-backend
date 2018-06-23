@@ -31,8 +31,9 @@ app.post('/inputCrime', function(req, res){
     let lng = req.body.lng;
     let author = req.body.author;
     let content = req.body.content;
-    let type = req.body.type;
-    
+	let type = req.body.type;
+	
+	
     let SQL = "INSERT INTO crime(lat, lng, author, content, type) VALUE ('" + lat + "','" + lng + "','" + author + "','" + content + "','" + type + "')";
     connection.query(SQL, function(error, results, fields) {
 		if (error) throw error;
@@ -42,7 +43,10 @@ app.post('/inputCrime', function(req, res){
 
 
 app.get('/getCrime', function(req, res) {
-    let SQL = "SELECT * FROM crime WHERE flag = 1;";
+    let type  = req.query.type;
+	type = String(type);
+	
+    let SQL = "SELECT * FROM crime WHERE flag = 1 AND type ='" + type + "';";
     connection.query(SQL, function(error, results, fields) {
         if (error) throw error;
         res.send(results)
