@@ -13,12 +13,12 @@ npm install body-parser
 
 ##DB Infomation
 
-** Database Name : crimefinder**
-** Table Name : crime**
+**Database Name : crimefinder**
+**Table Name : crime**
 
-컬럼명 의미 type 비고
-- - - 
-id 아이디 int AUTO_INCREMENT, PRIMARY_KEY
+컬럼명 >의미 >type >비고
+
+id >아이디 >int >AUTO_INCREMENT, PRIMARY_KEY
 
 lat     위도      text
 
@@ -33,4 +33,3 @@ content 내용 text
 type 범죄시간 varchar(3)
 
 flag 승인 여부 varchar(1)
-- - -
