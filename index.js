@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 var connection = mysql.createConnection({
     host : 'localhost',
     user : 'root',
-    password : 'dbdbdib',
+    password : '1234',
     database : 'crimefinder'
 });
 
@@ -21,6 +21,13 @@ app.listen(8080, function() {
     console.log('Server is listening on port 8080!안녕');
 });
 
+app.connect(function(err){
+  if(err){
+    console.error('error connecting'+err.stack);
+    return;
+  }
+  connection.end();
+});
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
@@ -38,7 +45,7 @@ app.post('/inputCrime', function(req, res){
 		if (error) throw error;
 		res.send(results)
     })
-})
+});
 
 
 app.get('/getCrime', function(req, res) {
@@ -65,7 +72,7 @@ app.put('/flagApprove', function(req, res) {
         if (error) throw error;
         res.send(results)
     })
-})
+});
 
 app.put('/flagCancel', function(req, res) {
 	let id = req.body.id;
@@ -75,4 +82,4 @@ app.put('/flagCancel', function(req, res) {
         if (error) throw error;
         res.send(results)
     })
-})
+});
