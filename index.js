@@ -61,8 +61,9 @@ app.get('/adminView', function(req, res) {
     })
 });
 
-app.put('/flagApprove', function(req, res) {
-	let id = req.body.id;
+app.get('/flagApprove', function(req, res) {
+    let id  = req.query.id;
+	id = String(id);
 	
 	let SQL = "UPDATE crime SET flag = '1' WHERE id = " + id + ";";
     connection.query(SQL, function(error, results, fields) {
@@ -71,8 +72,9 @@ app.put('/flagApprove', function(req, res) {
     })
 })
 
-app.put('/flagCancel', function(req, res) {
-	let id = req.body.id;
+app.get('/flagCancel', function(req, res) {
+	let id  = req.query.id;
+	id = String(id);
 	
 	let SQL = "UPDATE crime SET flag = '0' WHERE id = " + id + ";";
     connection.query(SQL, function(error, results, fields) {
