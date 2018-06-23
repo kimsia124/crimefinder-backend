@@ -38,8 +38,9 @@ app.post('/inputCrime', function(req, res){
     let lng = req.body.lng;
     let author = req.body.author;
     let content = req.body.content;
-    let type = req.body.type;
-    
+	let type = req.body.type;
+	
+	
     let SQL = "INSERT INTO crime(lat, lng, author, content, type) VALUE ('" + lat + "','" + lng + "','" + author + "','" + content + "','" + type + "')";
     connection.query(SQL, function(error, results, fields) {
 		if (error) throw error;
@@ -49,7 +50,10 @@ app.post('/inputCrime', function(req, res){
 
 
 app.get('/getCrime', function(req, res) {
-    let SQL = "SELECT * FROM crime WHERE flag = 1;";
+    let type  = req.query.type;
+	type = String(type);
+	
+    let SQL = "SELECT * FROM crime WHERE flag = 1 AND type ='" + type + "';";
     connection.query(SQL, function(error, results, fields) {
         if (error) throw error;
         res.send(results)
@@ -64,8 +68,9 @@ app.get('/adminView', function(req, res) {
     })
 });
 
-app.put('/flagApprove', function(req, res) {
-	let id = req.body.id;
+app.get('/flagApprove', function(req, res) {
+    let id  = req.query.id;
+	id = String(id);
 	
 	let SQL = "UPDATE crime SET flag = '1' WHERE id = " + id + ";";
     connection.query(SQL, function(error, results, fields) {
@@ -74,8 +79,9 @@ app.put('/flagApprove', function(req, res) {
     })
 });
 
-app.put('/flagCancel', function(req, res) {
-	let id = req.body.id;
+app.get('/flagCancel', function(req, res) {
+	let id  = req.query.id;
+	id = String(id);
 	
 	let SQL = "UPDATE crime SET flag = '0' WHERE id = " + id + ";";
     connection.query(SQL, function(error, results, fields) {
