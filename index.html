@@ -9,30 +9,25 @@
 <body onload="loadCrime()">
     <div id='container'> </div>
 
-
     <script>
         var Status = "";
+        function Approve(id){
+            alert("승인");
+            alert("/flagApprove?id=" + id);
+            xhttp.open("GET", "/flagApprove?id=" + id, true);
+            xhttp.send();
+        }
         
         function loadCrime() { 
             let xhttp = new XMLHttpRequest(); 
             xhttp.onreadystatechange = function() { 
                 if (this.readyState == 4 && this.status == 200) {
                     let crimes = JSON.parse(this.responseText);
-
-                    // twitters = 배열 형태
-                    // 배열의 원소 =
-                    //{
-                    // owner:::ffff:127.0.0.1,
-                    // time:2018-05-26T04:58:58.000Z,
-                    // content: adssadksajda
-                    //}
-                    
-
                     let crimeTables = "";
                     
                     for (let i = 0; i < crimes.length; i++) {
                         // TODO HTML 태그를 생성 container div에 자식으로 넣어줌
-                        
+                            
                         if(crimes[i].flag == '0')
                             Status = "Approve";
                         else
@@ -53,11 +48,12 @@
                             "<td>" + crimes[i].content + "</td>" +
                             "<td>" + crimes[i].type + "</td>" +
                             "<td>" + crimes[i].flag + "</td>" +
-                            "<td><button type='button' onclick='Approve()'>" + Status + "</button></td>"
+                            "<td><button type='button' onclick='Approve(" + crimes[i].id + ")'>" + Status + "</button></td>"
                         "</tr></table>" +
                         "</div>";
 
                         crimeTables += crimeItem;
+                        
                     }
                     document.getElementById('container').innerHTML = crimeTables; 
                 } 
