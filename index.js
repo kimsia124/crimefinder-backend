@@ -21,6 +21,16 @@ app.listen(8080, function() {
     console.log('Server is listening on port 8080!안녕');
 });
 
+
+app.connect(function(err){
+  if(err){
+    console.error('error connecting'+err.stack);
+    return;
+  }
+  connection.end();
+});
+
+
 app.post('/crime', function(req, res){
     let lat= req.body.lat;
     let lng = req.body.lng;
