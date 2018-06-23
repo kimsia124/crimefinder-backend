@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body onload="loadCrime()">
+    <div id='container'>
+    </div>
+
+
+    <script>
+        function loadCrime() { 
+            let xhttp = new XMLHttpRequest(); 
+            xhttp.onreadystatechange = function() { 
+                if (this.readyState == 4 && this.status == 200) {
+                    let crimes = JSON.parse(this.responseText);
+
+                    let crimeTables = "";
+                    for (let i = 0; i < crimes.length; i++) {
+                        let crimeItem = "<div>" +
+								"<a href='#'>" + //하이퍼 링크
+									"<table width='800' border='1' bgcolor='#eeeeee'><tr>" +
+									"<td>" + crimes[i].id + "</td>" +
+									"<td>" + crimes[i].lat + "</td>" +
+									"<td>" + crimes[i].lng + "</td>" +
+									"<td>" + crimes[i].author + "</td>" +
+									"<td>" + crimes[i].time + "</td>" +
+									"<td>" + crimes[i].content + "</td>" +
+									"<td>" + crimes[i].type + "</td>" +
+									"<td>" + crimes[i].flag + "</td>" +
+									"</tr></table>" +
+								"</a>" +
+                            "</div>";
+
+                        crimeTables += crimeItem;
+                    }
+                    document.getElementById('container').innerHTML = crimeTables; 
+                } 
+            };
+
+             
+            xhttp.open("GET", "/adminView", true);
+            xhttp.send();
+        }
+    </script>
+</body>
+
+</html>
