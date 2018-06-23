@@ -21,7 +21,12 @@ app.listen(8080, function() {
     console.log('Server is listening on port 8080!안녕');
 });
 
-app.post('/crime', function(req, res){
+
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/index.html');
+});
+
+app.post('/inputCrime', function(req, res){
     let lat= req.body.lat;
     let lng = req.body.lng;
     let author = req.body.author;
@@ -36,15 +41,23 @@ app.post('/crime', function(req, res){
 })
 
 
-app.get('/data/crime', function(req, res) {
-    let SQL = "SELECT * FROM crime WHERE flag = 1";
+app.get('/getCrime', function(req, res) {
+    let SQL = "SELECT * FROM crime WHERE flag = 1;";
     connection.query(SQL, function(error, results, fields) {
         if (error) throw error;
         res.send(results)
     })
 });
 
-app.put('/flag/approve', function(req, res) {
+app.get('/adminView', function(req, res) {
+    let SQL = "SELECT * FROM crime;";
+    connection.query(SQL, function(error, results, fields) {
+        if (error) throw error;
+        res.send(results)
+    })
+});
+
+app.put('/flagApprove', function(req, res) {
 	let id = req.body.id;
 	
 	let SQL = "UPDATE crime SET flag = '1' WHERE id = " + id + ";";
@@ -54,7 +67,7 @@ app.put('/flag/approve', function(req, res) {
     })
 })
 
-app.put('/flag/cancel', function(req, res) {
+app.put('/flagCancel', function(req, res) {
 	let id = req.body.id;
 	
 	let SQL = "UPDATE crime SET flag = '0' WHERE id = " + id + ";";
