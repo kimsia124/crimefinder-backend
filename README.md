@@ -1,7 +1,7 @@
 # crimefinder-backend
 2018 나르샤 프로젝트 Crimefinder back-end
 
-##Install
+#Install
 
 **Using npm**
 ```
@@ -11,10 +11,10 @@ npm install body-parser
 ```
 
 
-##DB Infomation
+#DB Infomation
 
-**Database Name : crimefinder** //
-
+**Database Name : crimefinder**
+...
 **Table Name : crime**
 
 |  column |  meaning  |     type     |             비고            |

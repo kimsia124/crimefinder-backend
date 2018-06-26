@@ -33,11 +33,6 @@
                         else
                             Status = "Cancel";
                         
-                        function Approve() {
-                            xhttp.open("PUT", "/flagApprove/" + crimes[i].id, true);
-                            xhttp.send();
-                        }
-                        
                         let crimeItem = "<div>" +
                             "<table width='800' border='1' bgcolor='#eeeeee'><tr>" +
                             "<td>" + crimes[i].id + "</td>" +
@@ -53,18 +48,14 @@
                         "</div>";
 
                         crimeTables += crimeItem;
-                        
                     }
                     document.getElementById('container').innerHTML = crimeTables; 
                 } 
             };
-
              
             xhttp.open("GET", "/adminView", true);
             xhttp.send();
         }
-
-
     </script>
 </body>
 
