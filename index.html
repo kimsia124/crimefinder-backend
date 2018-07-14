@@ -4,6 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <style>
+        tr {
+            font-weight: bolder;
+        }
+
+        button {
+            color: #000000;
+            border: #000000 solid 1px;
+            background-color: #ffffff;
+        }
+
+        button:hover {
+            color: #ffffff;
+            background-color: #9999ff;
+        }
+
+    </style>
 </head>
 
 <body onload="loadCrime()">
@@ -11,24 +28,24 @@
 
     <script>
         var Status = "";
-            
-        function setFlag(id, nextflag){
-            
-            let url="";
-            if(nextflag == '0'){
+
+        function setFlag(id, nextflag) {
+
+            let url = "";
+            if (nextflag == '0') {
                 alert("승인");
-                url="/flagApprove?id=" + id;
+                url = "/flagApprove?id=" + id;
             } else {
                 alert("거절");
-                url="/flagCancel?id=" + id;
+                url = "/flagCancel?id=" + id;
             }
-                         
+
             let xhttp = new XMLHttpRequest();
             xhttp.open("GET", url, true);
             xhttp.send();
             location.reload();
         }
-        
+
         function loadCrime() { 
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() { 
@@ -36,20 +53,21 @@
                     let crimes = JSON.parse(this.responseText);
                     let crimeTables = "";
                     let tableHeader = "<div>" +
-                            "<table width='800' border='1' bgcolor='#eeeeee'><tr>" +
-                            "<td>ID</td>" +
-                            "<td>latitude</td>" +
-                            "<td>longitude</td>" +
-                            "<td>author</td>" +
-                            "<td>time</td>" +
-                            "<td>content</td>" +
-                            "<td>type</td>" +
-                            "<td>flag</td></tr><table></div>"
+                        "<table width='800' border='2' bgcolor='#eeeeee'><tr bgcolor='#9999ff'>" +
+                        "<td>ID</td>" +
+                        "<td>latitude</td>" +
+                        "<td>longitude</td>" +
+                        "<td>author</td>" +
+                        "<td>time</td>" +
+                        "<td>content</td>" +
+                        "<td>type</td>" +
+                        "<td>flag</td>" +
+                        "<td>승인하기</td></tr>"
                     crimeTables += tableHeader;
 
                     for (let i = 0; i < crimes.length; i++) {
                         // TODO HTML 태그를 생성 container div에 자식으로 넣어줌
-                        
+
                         let flag = crimes[i].flag == '0';
 
                         if (flag)
@@ -57,8 +75,8 @@
                         else
                             Status = "Cancel";
 
-                        let crimeItem = "<div>" +
-                            "<table width='800' border='1' bgcolor='#eeeeee'><tr>"+
+                        let crimeItem =
+                            "<tr>" +
                             "<td>" + crimes[i].id + "</td>" +
                             "<td>" + crimes[i].lat + "</td>" +
                             "<td>" + crimes[i].lng + "</td>" +
@@ -68,11 +86,12 @@
                             "<td>" + crimes[i].type + "</td>" +
                             "<td>" + crimes[i].flag + "</td>" +
                             "<td><button type='button' onclick='setFlag(" + crimes[i].id + "," + !flag + ")'>" + Status + "</button></td>"
-                        "</tr></table>" +
-                        "</div>";
+                        "</tr>";
 
                         crimeTables += crimeItem;
                     }
+                    crimeTables +=
+                        "</table></div>";
                     document.getElementById('container').innerHTML = crimeTables; 
                 } 
             }; 
