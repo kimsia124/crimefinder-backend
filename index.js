@@ -18,7 +18,7 @@ var connection = mysql.createConnection({
 
 
 app.listen(8080, function() {
-    console.log('Server is listening on port 8080!안녕');
+    console.log('Server is listening on port 8080!');
 });
 
 app.connect(function(err){
@@ -34,7 +34,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/inputCrime', function(req, res){
-    let lat= req.body.lat;
+    let lat = req.body.lat;
     let lng = req.body.lng;
     let author = req.body.author;
     let content = req.body.content;
@@ -72,7 +72,9 @@ app.get('/flagApprove', function(req, res) {
     let id  = req.query.id;
 	id = String(id);
 	
-	let SQL = "UPDATE crime SET flag = '1' WHERE id = " + id + ";";
+	
+    let SQL = "UPDATE crime SET flag = '1' WHERE id = '" + id + "';";
+    console.log(SQL);
     connection.query(SQL, function(error, results, fields) {
         if (error) throw error;
         res.send(results)
@@ -83,7 +85,7 @@ app.get('/flagCancel', function(req, res) {
 	let id  = req.query.id;
 	id = String(id);
 	
-	let SQL = "UPDATE crime SET flag = '0' WHERE id = " + id + ";";
+	let SQL = "UPDATE crime SET flag = '0' WHERE id = '" + id + "';";
     connection.query(SQL, function(error, results, fields) {
         if (error) throw error;
         res.send(results)
