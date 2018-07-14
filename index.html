@@ -11,30 +11,54 @@
 
     <script>
         var Status = "";
-        function Approve(id){
-            alert("승인");
-            alert("/flagApprove?id=" + id);
-            xhttp.open("GET", "/flagApprove?id=" + id, true);
+            
+        function setFlag(id, nextflag){
+            
+            let url="";
+            if(nextflag == '0'){
+                alert("승인");
+                url="/flagApprove?id=" + id;
+            } else {
+                alert("거절");
+                url="/flagCancel?id=" + id;
+            }
+                         
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url, true);
             xhttp.send();
+            location.reload();
         }
         
         function loadCrime() { 
-            let xhttp = new XMLHttpRequest(); 
+            let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() { 
                 if (this.readyState == 4 && this.status == 200) {
                     let crimes = JSON.parse(this.responseText);
                     let crimeTables = "";
-                    
+                    let tableHeader = "<div>" +
+                            "<table width='800' border='1' bgcolor='#eeeeee'><tr>" +
+                            "<td>ID</td>" +
+                            "<td>latitude</td>" +
+                            "<td>longitude</td>" +
+                            "<td>author</td>" +
+                            "<td>time</td>" +
+                            "<td>content</td>" +
+                            "<td>type</td>" +
+                            "<td>flag</td></tr><table></div>"
+                    crimeTables += tableHeader;
+
                     for (let i = 0; i < crimes.length; i++) {
                         // TODO HTML 태그를 생성 container div에 자식으로 넣어줌
-                            
-                        if(crimes[i].flag == '0')
+                        
+                        let flag = crimes[i].flag == '0';
+
+                        if (flag)
                             Status = "Approve";
                         else
                             Status = "Cancel";
-                        
+
                         let crimeItem = "<div>" +
-                            "<table width='800' border='1' bgcolor='#eeeeee'><tr>" +
+                            "<table width='800' border='1' bgcolor='#eeeeee'><tr>"+
                             "<td>" + crimes[i].id + "</td>" +
                             "<td>" + crimes[i].lat + "</td>" +
                             "<td>" + crimes[i].lng + "</td>" +
@@ -43,7 +67,7 @@
                             "<td>" + crimes[i].content + "</td>" +
                             "<td>" + crimes[i].type + "</td>" +
                             "<td>" + crimes[i].flag + "</td>" +
-                            "<td><button type='button' onclick='Approve(" + crimes[i].id + ")'>" + Status + "</button></td>"
+                            "<td><button type='button' onclick='setFlag(" + crimes[i].id + "," + !flag + ")'>" + Status + "</button></td>"
                         "</tr></table>" +
                         "</div>";
 
@@ -51,11 +75,11 @@
                     }
                     document.getElementById('container').innerHTML = crimeTables; 
                 } 
-            };
-             
+            }; 
             xhttp.open("GET", "/adminView", true);
             xhttp.send();
         }
+
     </script>
 </body>
 
