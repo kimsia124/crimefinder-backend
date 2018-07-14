@@ -30,7 +30,7 @@ app.connect(function(err){
 });
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/admin.html');
 });
 
 app.post('/inputCrime', function(req, res){
