@@ -4,24 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <title>CrimeFinder</title>
-    
-    
+
     <style>
         tr {
             font-weight: bolder;
         }
+
         button {
             color: #000000;
             border: #000000 solid 1px;
             background-color: #ffffff;
         }
+
         button:hover {
             color: #ffffff;
             background-color: #9999ff;
         }
-        body{
+
+        body {
             background-color: #CCCCFF;
         }
+
     </style>
 </head>
 
@@ -29,79 +32,83 @@
     <div id='container'> </div>
 
     <script>
-        
-        var Status = "";
+        if (document.cookie == "login=true") {
+            var Status = "";
 
-        function setFlag(id, nextflag) {
+            function setFlag(id, nextflag) {
+                let url = "";
+                if (nextflag == '0') {
+                    alert("승인");
+                    url = "/flagApprove?id=" + id;
+                } else {
+                    alert("거절");
+                    url = "/flagCancel?id=" + id;
+                }
 
-            let url = "";
-            if (nextflag == '0') {
-                alert("승인");
-                url = "/flagApprove?id=" + id;
-            } else {
-                alert("거절");
-                url = "/flagCancel?id=" + id;
+                let xhttp = new XMLHttpRequest();
+                xhttp.open("GET", url, true);
+                xhttp.send();
+                location.reload();
             }
 
-            let xhttp = new XMLHttpRequest();
-            xhttp.open("GET", url, true);
-            xhttp.send();
-            location.reload();
+            function loadCrime() { 
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() { 
+                    if (this.readyState == 4 && this.status == 200) {
+                        let crimes = JSON.parse(this.responseText);
+                        let crimeTables = "";
+                        let tableHeader = "<div>" +
+                            "<table width='800' border='2' bgcolor='#eeeeee'><tr bgcolor='#9999ff'>" +
+                            "<td>ID</td>" +
+                            "<td>latitude</td>" +
+                            "<td>longitude</td>" +
+                            "<td>author</td>" +
+                            "<td>time</td>" +
+                            "<td>content</td>" +
+                            "<td>type</td>" +
+                            "<td>flag</td>" +
+                            "<td>승인하기</td></tr>"
+                        crimeTables += tableHeader;
+
+                        for (let i = 0; i < crimes.length; i++) {
+                            // TODO HTML 태그를 생성 container div에 자식으로 넣어줌
+
+                            let flag = crimes[i].flag == '0';
+
+                            if (flag)
+                                Status = "Approve";
+                            else
+                                Status = "Cancel";
+
+                            let crimeItem =
+                                "<tr>" +
+                                "<td>" + crimes[i].id + "</td>" +
+                                "<td>" + crimes[i].lat + "</td>" +
+                                "<td>" + crimes[i].lng + "</td>" +
+                                "<td>" + crimes[i].author + "</td>" +
+                                "<td>" + crimes[i].time + "</td>" +
+                                "<td>" + crimes[i].content + "</td>" +
+                                "<td>" + crimes[i].type + "</td>" +
+                                "<td>" + crimes[i].flag + "</td>" +
+                                "<td><button type='button' onclick='setFlag(" + crimes[i].id + "," + !flag + ")'>" + Status + "</button></td>"
+                            "</tr>";
+
+                            crimeTables += crimeItem;
+                        }
+                        crimeTables +=
+                            "</table></div>";
+                        document.getElementById('container').innerHTML = crimeTables; 
+                    } 
+                }; 
+                xhttp.open("GET", "/adminView", true);
+                xhttp.send();
+            }
         }
-
-        function loadCrime() { 
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() { 
-                if (this.readyState == 4 && this.status == 200) {
-                    let crimes = JSON.parse(this.responseText);
-                    let crimeTables = "";
-                    let tableHeader = "<div>" +
-                        "<table width='800' border='2' bgcolor='#eeeeee'><tr bgcolor='#9999ff'>" +
-                        "<td>ID</td>" +
-                        "<td>latitude</td>" +
-                        "<td>longitude</td>" +
-                        "<td>author</td>" +
-                        "<td>time</td>" +
-                        "<td>content</td>" +
-                        "<td>type</td>" +
-                        "<td>flag</td>" +
-                        "<td>승인하기</td></tr>"
-                    crimeTables += tableHeader;
-
-                    for (let i = 0; i < crimes.length; i++) {
-                        // TODO HTML 태그를 생성 container div에 자식으로 넣어줌
-
-                        let flag = crimes[i].flag == '0';
-
-                        if (flag)
-                            Status = "Approve";
-                        else
-                            Status = "Cancel";
-
-                        let crimeItem =
-                            "<tr>" +
-                            "<td>" + crimes[i].id + "</td>" +
-                            "<td>" + crimes[i].lat + "</td>" +
-                            "<td>" + crimes[i].lng + "</td>" +
-                            "<td>" + crimes[i].author + "</td>" +
-                            "<td>" + crimes[i].time + "</td>" +
-                            "<td>" + crimes[i].content + "</td>" +
-                            "<td>" + crimes[i].type + "</td>" +
-                            "<td>" + crimes[i].flag + "</td>" +
-                            "<td><button type='button' onclick='setFlag(" + crimes[i].id + "," + !flag + ")'>" + Status + "</button></td>"
-                        "</tr>";
-
-                        crimeTables += crimeItem;
-                    }
-                    crimeTables +=
-                        "</table></div>";
-                    document.getElementById('container').innerHTML = crimeTables; 
-                } 
-            }; 
-            xhttp.open("GET", "/adminView", true);
-            xhttp.send();
+        
+        else {
+            alert("잘못된 접근입니다. 로그인 화면으로 이동합니다.")
+            location = "http://127.0.0.1:8080/admin";
         }
-
     </script>
 </body>
 
