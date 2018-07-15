@@ -54,8 +54,10 @@ app.post('/inputCrime', function(req, res){
 	
 	
     let SQL = "INSERT INTO crime(lat, lng, author, content, type) VALUE ('" + lat + "','" + lng + "','" + author + "','" + content + "','" + type + "')";
+    console.log(SQL);
     connection.query(SQL, function(error, results, fields) {
 		if (error) throw error;
+        res.send(results)
     })
 })
 
@@ -65,6 +67,7 @@ app.get('/getCrime', function(req, res) {
 	type = String(type);
 	
     let SQL = "SELECT * FROM crime WHERE flag = 1 AND type ='" + type + "';";
+    console.log(SQL);
     connection.query(SQL, function(error, results, fields) {
         if (error) throw error;
         res.send(results)
@@ -84,6 +87,7 @@ app.get('/flagApprove', function(req, res) {
 	id = String(id);
 	
 	let SQL = "UPDATE crime SET flag = '1' WHERE id = " + id + ";";
+    console.log(SQL);
     connection.query(SQL, function(error, results, fields) {
         if (error) throw error;
         res.send(results)
@@ -95,6 +99,7 @@ app.get('/flagCancel', function(req, res) {
 	id = String(id);
 	
 	let SQL = "UPDATE crime SET flag = '0' WHERE id = " + id + ";";
+    console.log(SQL);
     connection.query(SQL, function(error, results, fields) {
         if (error) throw error;
         res.send(results)
