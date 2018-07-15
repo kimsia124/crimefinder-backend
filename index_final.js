@@ -130,6 +130,10 @@ app.get('/pin/:id', function (req, res) {
 var client_id = "edUeHZ4NHcXexnbTzU2M";
 var client_secret = "gcMl18oSDs";
 
+app.get('/newsSearch', function(req, res){
+    res.sendFile(__dirname + '/newsSearch.html');
+});
+
 app.get('/search', function (req, res) {
 
     var api_url = 'https://openapi.naver.com/v1/search/news?query=' + encodeURI(req.query.query); // json 결과
@@ -155,4 +159,4 @@ app.get('/search', function (req, res) {
     });
 })
 
-app.listen(8010);
+app.listen(8080);
