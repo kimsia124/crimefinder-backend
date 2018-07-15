@@ -13,10 +13,10 @@ app.use(bodyParser.urlencoded({
 app.use(cors());
 
 var connection = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : 'dbdbdib',
-    database : 'crimefinder'
+    host : '',
+    user : '',
+    password : '',
+    database : ''
 });
 
 
