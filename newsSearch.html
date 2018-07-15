@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CrimeFinder</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            background-color: white;
+        }
+
+    </style>
+</head>
+
+<body onload="search(query, onresive)">
+    <div id='container'></div>
+
+    <script>
+        let query = prompt("검색할 단어를 입력하세요.");
+
+        function onresive(data) {
+            let response = data;
+            let items = response.items;
+            let itemTable = "";
+            let tableHeader = "<div>" +
+                "<table width='800' border='2' bgcolor='#eeeeee'><tr bgcolor='#9999ff'>" +
+                "<td>TITLE</td>" +
+                "<td>Description</td>" +
+                "<td>pubDate</td></tr>"
+            itemTable += tableHeader;
+
+            for (let i = 0; i < items.length; i++) {
+                let item =
+                    "<tr>" +
+                    "<td><a href='" + items[i].link + "' target='_blank'>" + items[i].title + "</a></td>" +
+                    "<td>" + items[i].description + "</td>" +
+                    "<td>" + items[i].pubDate + "</td></tr>";
+
+                itemTable += item;
+            }
+            itemTable += "</table></div>";
+            document.getElementById('container').innerHTML = itemTable;
+        }
+
+        function search(query, successCallback) {
+
+            // 자세한 요청 형식은 네이버 검색 API 참조
+            // link https://developers.naver.com/docs/search/news/
+            let url = '/search' + '?query=' + query;
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: successCallback
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
